@@ -1,20 +1,23 @@
-import React, { useState, useEffect }from "react";
+import React, { useState, useEffect, useRef }from "react";
 import axios from "axios";
 import styled from "styled-components";
 
 
+
 function Apod() {
     const [apod, setApod] = useState([]);
+    let textItem = useRef(null);
 
     useEffect(() => {
         axios.get("https://api.nasa.gov/planetary/apod?api_key=huR4rsguheIOwHQktaPUQF45DBbXuztNeUJKt2al")
         .then(response => {
             setApod(response.data);
         });
+          
+          
     }, []);
 
-    console.log(apod)
-
+    
     const GridContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 20px 2fr;
@@ -38,6 +41,8 @@ function Apod() {
     const Explanation = styled.p `
         text-align: center;
         font-size: 18px;
+        margin-left: 12px
+        opacity: 0;
     `
 
     const Image = styled.img `
@@ -48,7 +53,7 @@ function Apod() {
 
     return (
         <GridContainer>
-            <Content>
+            <Content ref = {el => {textItem = el}}>
             <Title>{apod.title}</Title>
             <Explanation>{apod.explanation}</Explanation>
             </Content>
